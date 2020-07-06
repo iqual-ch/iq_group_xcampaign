@@ -1,0 +1,8 @@
+name: iQual xCampaign module
+description: Integration between the iq_group module and xCampaign
+package: Custom
+type: module
+core: 8.x
+dependencies:
+  - iq_group:iq_group
+  - xcampaign_api:xcampaign_api

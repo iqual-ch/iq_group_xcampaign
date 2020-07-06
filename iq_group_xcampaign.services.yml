@@ -1,0 +1,6 @@
+services:
+  iq_group_xcampaign.xcampaign_subscriber:
+    class: Drupal\iq_group_xcampaign\EventSubscriber\XCampaignSubscriber
+    arguments: ['@xcampaign_api']
+    tags:
+      - {name: event_subscriber}
