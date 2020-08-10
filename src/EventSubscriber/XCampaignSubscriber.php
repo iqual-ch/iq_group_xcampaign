@@ -62,7 +62,8 @@ class XCampaignSubscriber implements EventSubscriberInterface {
           'langcode' => $user->getPreferredLangcode(),
           'ip_address' => \Drupal::request()->getClientIp(),
           "first_name" => reset($user->get('field_iq_user_base_address')->getValue())['given_name'],
-          "last_name" => reset($user->get('field_iq_user_base_address')->getValue())['family_name']
+          "last_name" => reset($user->get('field_iq_user_base_address')->getValue())['family_name'],
+          'token' => $user->field_iq_group_user_token->value
         ];
 
         if ($user->hasField('field_iq_group_preferences') && !$user->get('field_iq_group_preferences')->isEmpty()) {
@@ -76,6 +77,7 @@ class XCampaignSubscriber implements EventSubscriberInterface {
           $user->set('field_iq_group_xcampaign_id', $xcampaign_id);
         }
       }
+
     }
   }
 
