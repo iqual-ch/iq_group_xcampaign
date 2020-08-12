@@ -78,7 +78,15 @@ class XCampaignSubscriber implements EventSubscriberInterface {
           $xcampaign_id = $this->xcampaignApiService->createContact($email, $profile_data);
           $user->set('field_iq_group_xcampaign_id', $xcampaign_id);
         }
+        // Delete from blacklist - because the user is active.
+        $this->xcampaignApiService->deleteFromBlacklist($email);
       }
+      else if (!empty($user->field_iq_group_xcampaign_id->value)){
+        $email = $user->getEmail();
+        // Update blacklist if the user is blocked and there he is registered on xCampaign.
+        $this->xcampaignApiService->updateBlacklist($email);
+      }
+
     }
   }
 
