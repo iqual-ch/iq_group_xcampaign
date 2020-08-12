@@ -39,7 +39,6 @@ class XCampaignSubscriber implements EventSubscriberInterface {
     ];
   }
 
-
   /**
    * Update a XCampaign contact.
    *
@@ -63,7 +62,10 @@ class XCampaignSubscriber implements EventSubscriberInterface {
           'ip_address' => \Drupal::request()->getClientIp(),
           "first_name" => reset($user->get('field_iq_user_base_address')->getValue())['given_name'],
           "last_name" => reset($user->get('field_iq_user_base_address')->getValue())['family_name'],
-          'token' => $user->field_iq_group_user_token->value
+          'token' => $user->field_iq_group_user_token->value,
+          "address" => reset($user->get('field_iq_user_base_address')->getValue())['address_line1'],
+          "postcode" => reset($user->get('field_iq_user_base_address')->getValue())['postal_code'],
+          "city" => reset($user->get('field_iq_user_base_address')->getValue())['locality']
         ];
 
         if ($user->hasField('field_iq_group_preferences') && !$user->get('field_iq_group_preferences')->isEmpty()) {
@@ -77,7 +79,6 @@ class XCampaignSubscriber implements EventSubscriberInterface {
           $user->set('field_iq_group_xcampaign_id', $xcampaign_id);
         }
       }
-
     }
   }
 
