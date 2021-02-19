@@ -68,6 +68,9 @@ class XCampaignSubscriber implements EventSubscriberInterface {
           "city" => reset($user->get('field_iq_user_base_address')->getValue())['locality']
         ];
 
+        if ($user->hasField('field_gcb_custom_birth_date') && !$user->get('field_gcb_custom_birth_date')->isEmpty()) {
+          $profile_data["birth_date"] = $user->field_gcb_custom_birth_date->value;
+        }
         if ($user->hasField('field_iq_group_preferences') && !$user->get('field_iq_group_preferences')->isEmpty()) {
           $profile_data["preferences"] = array_filter(array_column($user->field_iq_group_preferences->getValue(), 'target_id'));
         }
@@ -99,9 +102,9 @@ class XCampaignSubscriber implements EventSubscriberInterface {
   public function deleteXCampaignContact(IqGroupEvent $event) {
     if ($event && $event->getUser()->id()) {
       \Drupal::logger('iq_group_xcampaign')->notice('XCampaign delete event triggered for ' . $event->getUser()->id());
-      
+
       $user = $event->getUser();
-      
+
       $xcampaign_id = $user->field_iq_group_xcampaign_id->value;
 
       if (!empty($xcampaign_id) || $xcampaign_id != 0) {
