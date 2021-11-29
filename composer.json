@@ -9,7 +9,7 @@
     }
   ],
   "require": {
-    "iqual/iq_group": "*",
-    "drupal/xcampaign_api": "*"
+    "iqual/iq_group": "^3.0",
+    "drupal/xcampaign_api": "^2.0"
   }
 }
