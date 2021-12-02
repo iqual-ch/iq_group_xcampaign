@@ -34,8 +34,8 @@ class XCampaignSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents() {
     return [
-      IqGroupEvents::USER_PROFILE_UPDATE => [['updateXCampaignContact', 300]],
-      IqGroupEvents::USER_PROFILE_DELETE => [['deleteXCampaignContact', 300]],
+    #  IqGroupEvents::USER_PROFILE_UPDATE => [['updateXCampaignContact', 300]],
+    #  IqGroupEvents::USER_PROFILE_DELETE => [['deleteXCampaignContact', 300]],
     ];
   }
 
