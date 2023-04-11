@@ -3,12 +3,8 @@
 namespace Drupal\iq_group_xcampaign\EventSubscriber;
 
 use Drupal\iq_group\Event\IqGroupEvent;
-use Drupal\iq_group\IqGroupEvents;
-use Drupal\iq_group\XCampaignEvents;
-use Drupal\iq_group\Event\XCampaignEvent;
 use Drupal\xcampaign_api\XCampaignApiServiceInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
 
 /**
  * Event subscriber to handle xcampaign events dispatched by iq_group module.
@@ -34,8 +30,8 @@ class XCampaignSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents() {
     return [
-    #  IqGroupEvents::USER_PROFILE_UPDATE => [['updateXCampaignContact', 300]],
-    #  IqGroupEvents::USER_PROFILE_DELETE => [['deleteXCampaignContact', 300]],
+    // IqGroupEvents::USER_PROFILE_UPDATE => [['updateXCampaignContact', 300]],
+    // IqGroupEvents::USER_PROFILE_DELETE => [['deleteXCampaignContact', 300]],.
     ];
   }
 
@@ -65,7 +61,7 @@ class XCampaignSubscriber implements EventSubscriberInterface {
           'token' => $user->field_iq_group_user_token->value,
           "address" => reset($user->get('field_iq_user_base_address')->getValue())['address_line1'],
           "postcode" => reset($user->get('field_iq_user_base_address')->getValue())['postal_code'],
-          "city" => reset($user->get('field_iq_user_base_address')->getValue())['locality']
+          "city" => reset($user->get('field_iq_user_base_address')->getValue())['locality'],
         ];
 
         if ($user->hasField('field_gcb_custom_birth_date') && !$user->get('field_gcb_custom_birth_date')->isEmpty()) {
@@ -77,14 +73,15 @@ class XCampaignSubscriber implements EventSubscriberInterface {
         if ($user->hasField('field_iq_group_xcampaign_id') && !empty($user->get('field_iq_group_xcampaign_id')->getValue())) {
           $profile_data['xcampaign_id'] = $user->field_iq_group_xcampaign_id->value;
           $this->xcampaignApiService->editContact($profile_data['xcampaign_id'], $profile_data);
-        } else {
+        }
+        else {
           $xcampaign_id = $this->xcampaignApiService->createContact($email, $profile_data);
           $user->set('field_iq_group_xcampaign_id', $xcampaign_id);
         }
         // Delete from blacklist - because the user is active.
         $this->xcampaignApiService->deleteFromBlacklist($email);
       }
-      else if (!empty($user->field_iq_group_xcampaign_id->value)){
+      elseif (!empty($user->field_iq_group_xcampaign_id->value)) {
         $email = $user->getEmail();
         // Update blacklist if the user is blocked and there he is registered on xCampaign.
         $this->xcampaignApiService->updateBlacklist($email);
@@ -93,7 +90,7 @@ class XCampaignSubscriber implements EventSubscriberInterface {
     }
   }
 
-   /**
+  /**
    * Delete a XCampaign contact.
    *
    * @param \Drupal\iq_group\Event\IqGroupEvent $event
@@ -112,4 +109,5 @@ class XCampaignSubscriber implements EventSubscriberInterface {
       }
     }
   }
+
 }
